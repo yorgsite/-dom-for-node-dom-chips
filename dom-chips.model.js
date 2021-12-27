@@ -99,7 +99,7 @@ module.exports=function(_dom){
 
 	/**
 	'dom-chips' render API.
-	Passed as first argument when calling the CellRenderer.
+	Passed as first argument when instaciating params.render
 
 	@constructor
 	*/
@@ -121,6 +121,7 @@ module.exports=function(_dom){
 	/**
 	'dom-chips' cell renderer model.
 	The params.render attribute must follow this constructor pattern when calling _dom('dom-chips',params,root);.
+	@param {RenderAPI} renderAPI 
 	@constructor
 	*/
 	class AbtractCell{

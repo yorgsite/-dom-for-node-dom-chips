@@ -187,7 +187,7 @@ fired on event
 ## <a name="RenderAPI"></a> class **RenderAPI**
  
 'dom-chips' render API.
-	Passed as first argument when calling the CellRenderer.
+	Passed as first argument when instaciating params.render
  
 **use** : new RenderAPI()
  
@@ -241,7 +241,9 @@ fired on event
 'dom-chips' cell renderer model.
 	The params.render attribute must follow this constructor pattern when calling _dom('dom-chips',params,root);.
  
-**use** : new AbtractCell()
+**use** : new AbtractCell( **renderAPI** )
+ 
+ + **param** : renderAPI `RenderAPI`
  
 <hr/>
  
