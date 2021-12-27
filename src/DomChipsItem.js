@@ -1,7 +1,7 @@
 
 const {Core} = require('./Core.js');
-const {DragDrop}=require('../../tools/src/core/DragDrop');
-const {ErrorPile}=require('../../tools/src/core/ErrorPile');
+const {DragDrop}=require('@dom-for-node/tools/src/core/DragDrop');
+const {ErrorPile}=require('@dom-for-node/tools/src/core/ErrorPile');
 
 let _idc=1;
 const dragDrop=DragDrop.familly('dom-data-item');

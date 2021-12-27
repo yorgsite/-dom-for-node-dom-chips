@@ -2,8 +2,8 @@
 const {DomChipsConfig} = require('./DomChipsConfig.js');
 const {DomChipsRenderer} = require('./DomChipsRenderer.js');
 const {DomChipsItem} = require('./DomChipsItem.js');
-// const {Listener}=require('@dom-for-node/tools/src/core/Listener');
-const {Listener}=require('../../tools/src/core/Listener');
+const {Listener}=require('@dom-for-node/tools/src/core/Listener');
+// const {Listener}=require('../../tools/src/core/Listener');
 
 // console.log('Listener',Listener);
 

@@ -26,6 +26,6 @@
 	},
 	"homepage": "https://github.com/yorgsite/-dom-for-node-dom-chips#readme",
 	"dependencies": {
-		"@dom-for-node/tools": "0.0.2"
+		"@dom-for-node/tools": "0.0.4"
 	}
 }
