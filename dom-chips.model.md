@@ -249,7 +249,7 @@ fired on event
 
 + ### <a name="getDom"></a> method **getDom**
 
-
+&emsp;&emsp; returns the cell dom element
 
 &emsp;&emsp; **use** : abtractCell.getDom()
 <hr/>
@@ -269,7 +269,7 @@ fired on event
 
 + ### <a name="toData"></a> method **toData**
 
-
+&emsp;&emsp; returns the cell data
 
 &emsp;&emsp; **use** : abtractCell.toData()
 <hr/>

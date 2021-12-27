@@ -124,9 +124,10 @@ module.exports=function(_dom){
 	@constructor
 	*/
 	class AbtractCell{
-		constructor(){}
+		constructor(renderAPI){}
 		/**
-		 * @returns {HTMLElement} the cell visual element
+		 * returns the cell dom element
+		 * @returns {HTMLElement} the cell dom element
 		*/
 		getDom(){}
 		/**
@@ -135,6 +136,7 @@ module.exports=function(_dom){
 		*/
 		fromData(data){}
 		/**
+		 * returns the cell data
 		 * @returns {*} the cell data
 		*/
 		toData(){}
