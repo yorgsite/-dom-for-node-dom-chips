@@ -13,6 +13,7 @@ module.exports=function(_dom){
 		render:AbtractCell(RenderAPI) constructor implementing AbtractCell
 		[root]:HTMLElement root element to use instead of the default root element
 		[familly]:string restrictive chip familly
+		[multi]:boolean multiple selection
 	})
 	</code>
 	*/
@@ -40,7 +41,6 @@ module.exports=function(_dom){
 		 * @param {*} params 
 		 */
 		constructor(scope,doms,params){
-			console.log('- new DomChipsModel');
 			this._priv=new DomChipsModelPriv(scope,doms);
 			this._priv.init(params);
 		}
@@ -57,7 +57,7 @@ module.exports=function(_dom){
 		}
 		/**
 		 * add dom-chips event listener
-		 * @param {'insert'|'move'|'remove'|'change'} type : event type 
+		 * @param {'insert'|'move'|'remove'|'change'|'select'|'unselect'|'focus'|'blur'} type : event type 
 		 * @param {function} callback : fired on event
 		 */
 		on(type,callback){

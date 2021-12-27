@@ -3,14 +3,15 @@ const {Core} = require('./Core.js');
 const {DragDrop}=require('../../tools/src/core/DragDrop');
 const {ErrorPile}=require('../../tools/src/core/ErrorPile');
 
-const dragDrop=DragDrop.familly('dom-data-item');
 let _idc=1;
+const dragDrop=DragDrop.familly('dom-data-item');
 const _err=new ErrorPile('dom-chips.Item');
 const rendeRef={
 	getErrors:(d)=>false,
 	setSelected:(b)=>{},
 	setFocused:(b)=>{},
 };
+
 class DomChipsItem{
 	constructor(model){
 		this.id=_idc++;
@@ -27,6 +28,7 @@ class DomChipsItem{
 		}
 		this._drag=null;
 		this._drop=null;
+		this._selector=null;
 		this._changedOut=false;
 		this._changedIn=false;
 		this._changedDom=false;
@@ -105,12 +107,29 @@ class DomChipsItem{
 			this._drop=null;
 		}
 	}
+	get selector(){
+		return this._selector?this._selector.dom:null;
+	}
+	set selector(v){
+		if((v instanceof HTMLElement)&&(!this._selector||v!==this._selector.dom)){
+			this.selector=null;
+			this._selector={dom};
+			this._selector.cb=()=>{
+				this.select();
+			};
+			this._selector.dom.addEventListener('mousedown',this._selector.cb)
+		}else if(this._selector){
+			this._selector.dom.removeEventListener('mousedown',this._selector.cb);
+			this._selector=null;
+		}
+	}
 	get index(){
 		return this._model?this._model._list.findIndex(itm=>itm.id===this.id):-1;
 	}
 	get familly(){
 		return this._model._conf.familly;
 	}
+	get selected(){return this._selected;}
 	remove(){
 		if(this._model){
 			this._model.remove(this);
@@ -121,11 +140,11 @@ class DomChipsItem{
 		if(this._selected!==selected){
 			this._selected=selected;
 			let type=this._selected?'select':'unselect';
+			this._element.setSelected(this._selected);
 			this._model._listener.flush(type,{
 				type,
 				itm:this
 			});
-			this._element.setSelected(this._selected);
 		}
 	}
 	setFocused(focused){
@@ -133,11 +152,21 @@ class DomChipsItem{
 		if(this._focused!==focused){
 			this._focused=focused;
 			let type=this._focused?'focus':'blur';
+			this._element.setFocused(this._focused);
 			this._model._listener.flush(type,{
 				type,
 				itm:this
 			});
-			this._element.setFocused(this._focused);
+		}
+	}
+	focus(){
+		if(!this._focused){
+			this._model.focusIndex(this.index);
+		}
+	}
+	select(){
+		if(!this._selected){
+			this._model.selectIndexes(this._model.selectedIndexes.concat([this.index]));
 		}
 	}
 };
@@ -175,9 +204,14 @@ class RenderAPI{
 	set drop(v){this._priv.drop=v;}
 	get drag(){return this._priv.drag;}
 	set drag(v){this._priv.drag=v;}
+	get selector(){return this._priv.drag;}
+	set selector(v){this._priv.drag=v;}
 	get selected(){return this._priv._selected;}
 	focus(){
-		this._priv._model.focusIndex(this.index);
+		this._priv.focus();
+	}
+	select(){
+		this._priv.select();
 	}
 	//this._selected=false;
 };

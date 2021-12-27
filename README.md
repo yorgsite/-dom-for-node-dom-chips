@@ -1,6 +1,6 @@
 # @dom-for-node/dom-chips
 
-description
+'dom-chips' is a templatable data list handling selection focus & drag&drop
 
 
 install 

@@ -52,6 +52,7 @@ configuration object as
 		render:AbtractCell(RenderAPI) constructor implementing AbtractCell
 		[root]:HTMLElement root element to use instead of the default root element
 		[familly]:string restrictive chip familly
+		[multi]:boolean multiple selection
 	})
 	
 
@@ -120,7 +121,7 @@ Component 'dom-chips' model handler.
 
 &emsp;&emsp; **use** : domChipsModel.on( **type** , **callback** )
 
-&emsp;&emsp; &emsp; + **param** : type `'insert'|'move'|'remove'|'change'`
+&emsp;&emsp; &emsp; + **param** : type `'insert'|'move'|'remove'|'change'|'select'|'unselect'|'focus'|'blur'`
 
 event type 
 		 *

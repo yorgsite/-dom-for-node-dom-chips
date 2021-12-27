@@ -13,7 +13,6 @@ module.exports=function(_dom){
 
 	class DomChipsModelPriv{
 		constructor(scope,doms){
-			console.log('new DomChipsModelPriv');
 			this.tagName='dom-chips';
 			this.scope=scope;
 			this.doms=doms;
@@ -22,19 +21,8 @@ module.exports=function(_dom){
 			this._conf=new DomChipsConfig();
 		}
 		init(params){
-			console.log('DomChipsModelPriv.init',params);
 			this.params	= params;
 			
-			
-			// evts:{
-			// 	'select':[],
-			// 	'add':[],
-			// 	'remove':[],
-			// 	'change':[],
-			// 	'focus':[],
-			// 	'blur':[],
-			// 	'move':[]
-			// }
 			this._conf.init(this.params);
 
 			this.CellRenderer	= this._conf.CellRenderer;
@@ -52,28 +40,44 @@ module.exports=function(_dom){
 			//this.root _dom('div',{className:"dom-chips"},[]);
 		}		
 		initIO(){
-			console.log('initIO',this.doms.root);
 			Object.defineProperty(this.doms.root,'doms',{get:()=>this.doms});			
 			[	'on',
+				'off',
 				'clear',
-				'add'
+				'add',
+				'remove',
+				'insert',
+				'getIndex',
+				'select'
 			].forEach(k=>{
 				this.doms.root[k]=(...args)=>this[k](...args);
 			});
-			Object.defineProperty(this.doms.root,'datas',{
-				get:()=>this.datas,
-				// set:v=>this.datas=v
+			[	'dom',
+				'length',
+				'selectedIndexes'
+			].forEach(k=>{
+				Object.defineProperty(this.doms.root,k,{
+					get:()=>this[k],
+				});
+			});
+			[	'datas'
+			].forEach(k=>{
+				Object.defineProperty(this.doms.root,k,{
+					get:()=>this[k],
+					set:v=>this[k]=v
+				});
 			});
 		}
-	// .select mode one single multi
-	// .selected data[]
-	// .selectedIndexes number[]
+
 		// ---------- PUBLIC --------
 		get dom(){
 			return this.root;
 		}
 		get length(){
 			return this._list.length;
+		}
+		get selectedIndexes(){
+			return this._list.map((itm,i)=>{itm,i}).filter(d=>d.itm.selected).map(d=>d.i);
 		}
 		get datas(){
 			return this._list.map(itm=>itm.data);
@@ -171,11 +175,19 @@ module.exports=function(_dom){
 		}
 		selectIndexes(ids){
 			ids=ids instanceof Array?ids:[ids];
+			if(ids.length&&!this._conf.multi){
+				ids=[ids.pop()];
+			}
 			this._list.forEach((itm,i)=>itm.setSelected(ids.includes(i)));
 		}
 		focusIndex(id){
-			
 			this._list.forEach((itm,i)=>itm.setFocused(i===id));
+		}
+		select(data){
+			let ids=(data instanceof Array?data:[data])
+			.map(d=>this.getIndex(d))
+			.filter(id=>id>-1);
+			this.selectIndexes(ids);
 		}
 	};
 	return {DomChipsModelPriv};
