@@ -1,6 +1,7 @@
 # dom-chips
  
 Component 'dom-chips'.
+	'dom-chips' is a templatable list 
 	Shares model handler public attr & methods. See DomChipsModel.
  
 <hr/>
@@ -22,10 +23,12 @@ Component 'dom-chips'.
 	+ [renderAPI.drop](#drop)
 	+ [renderAPI.drag](#drag)
 + [AbtractCell](#AbtractCell)
+	+ [abtractCell.getDom()](#getDom)
 	+ [abtractCell.fromData( **data** )](#fromData)
 	+ [abtractCell.toData()](#toData)
-	+ [abtractCell.getDom()](#getDom)
 	+ [abtractCell.getErrors( **data** )](#getErrors)
+	+ [abtractCell.setSelected( **selected** )](#setSelected)
+	+ [abtractCell.setFocused( **selected** )](#setFocused)
  
 <hr/>
  
@@ -34,6 +37,7 @@ Component 'dom-chips'.
 ## <a name="dom-chips"></a> model **dom-chips**
  
 Component 'dom-chips'.
+	'dom-chips' is a templatable list 
 	Shares model handler public attr & methods. See DomChipsModel.
  
 **use** : _dom( **'dom-chips'** , **params** )
@@ -47,6 +51,7 @@ configuration object as
 	_dom('dom-chips',{
 		render:AbtractCell(RenderAPI) constructor implementing AbtractCell
 		[root]:HTMLElement root element to use instead of the default root element
+		[familly]:string restrictive chip familly
 	})
 	
 
@@ -117,7 +122,7 @@ Component 'dom-chips' model handler.
 
 &emsp;&emsp; &emsp; + **param** : type `'insert'|'move'|'remove'|'change'`
 
-event type
+event type 
 		 *
 
 &emsp;&emsp; &emsp; + **param** : callback `function`
@@ -234,9 +239,19 @@ fired on event
 ## <a name="AbtractCell"></a> class **AbtractCell**
  
 'dom-chips' cell renderer model.
+	The params.render attribute must follow this constructor pattern when calling _dom('dom-chips',params,root);.
  
 **use** : new AbtractCell()
  
+<hr/>
+ 
+
+
++ ### <a name="getDom"></a> method **getDom**
+
+
+
+&emsp;&emsp; **use** : abtractCell.getDom()
 <hr/>
  
 
@@ -261,15 +276,6 @@ fired on event
  
 
 
-+ ### <a name="getDom"></a> method **getDom**
-
-
-
-&emsp;&emsp; **use** : abtractCell.getDom()
-<hr/>
- 
-
-
 + ### <a name="getErrors"></a> method **getErrors**
 
 &emsp;&emsp; [optional] checks data validity
@@ -277,6 +283,28 @@ fired on event
 &emsp;&emsp; **use** : abtractCell.getErrors( **data** )
 
 &emsp;&emsp; &emsp; + **param** : data `*`
+<hr/>
+ 
+
+
++ ### <a name="setSelected"></a> method **setSelected**
+
+&emsp;&emsp; [optional] handle cell selection state
+
+&emsp;&emsp; **use** : abtractCell.setSelected( **selected** )
+
+&emsp;&emsp; &emsp; + **param** : selected `boolean`
+<hr/>
+ 
+
+
++ ### <a name="setFocused"></a> method **setFocused**
+
+&emsp;&emsp; [optional] handle cell focus state
+
+&emsp;&emsp; **use** : abtractCell.setFocused( **selected** )
+
+&emsp;&emsp; &emsp; + **param** : selected `boolean`
  
 [▲](#main_menu)
 <hr/>

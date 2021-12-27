@@ -65,7 +65,9 @@ module.exports=function(_dom){
 				// set:v=>this.datas=v
 			});
 		}
-	
+	// .select mode one single multi
+	// .selected data[]
+	// .selectedIndexes number[]
 		// ---------- PUBLIC --------
 		get dom(){
 			return this.root;
@@ -127,7 +129,7 @@ module.exports=function(_dom){
 			let from=itm.index;
 			to=Math.max(0,to);
 			if(from!==to){
-				let ti=to+(to<from?0:1);
+				let ti=to+0;//(to<from?0:1);
 				if(ti<this._list.length)to=this._list.length-1;
 				this._list.splice(from,1);
 				this.root.removeChild(itm.dom);
@@ -166,6 +168,14 @@ module.exports=function(_dom){
 			if(data instanceof DomChipsItem)return this._list.findIndex(itm=>itm.id=data.id);
 			if(typeof(data)==='number')return this._list.findIndex(itm=>itm.id=data);
 			return this._list.findIndex(itm=>itm.data=data);
+		}
+		selectIndexes(ids){
+			ids=ids instanceof Array?ids:[ids];
+			this._list.forEach((itm,i)=>itm.setSelected(ids.includes(i)));
+		}
+		focusIndex(id){
+			
+			this._list.forEach((itm,i)=>itm.setFocused(i===id));
 		}
 	};
 	return {DomChipsModelPriv};

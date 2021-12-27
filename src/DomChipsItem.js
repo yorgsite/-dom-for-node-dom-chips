@@ -5,24 +5,33 @@ const {ErrorPile}=require('../../tools/src/core/ErrorPile');
 
 const dragDrop=DragDrop.familly('dom-data-item');
 let _idc=1;
-let _err=new ErrorPile('dom-chips.Item');
+const _err=new ErrorPile('dom-chips.Item');
+const rendeRef={
+	getErrors:(d)=>false,
+	setSelected:(b)=>{},
+	setFocused:(b)=>{},
+};
 class DomChipsItem{
 	constructor(model){
 		this.id=_idc++;
 		this._model=model;
 		this.renderIO=new RenderAPI(this);
-		this.outIO=new DomChipsOutIO(this);
+		// this.outIO=new DomChipsOutIO(this);
 		
 		this.CellRenderer=model._conf.CellRenderer;
 		this._element=new this.CellRenderer(this.renderIO);
-		if(typeof(this._element.getErrors)!=='function'){
-			this._element.getErrors=(d)=>false;
+		for(let k in rendeRef){
+			if(typeof(this._element[k])!=='function'){
+				this._element[k]=rendeRef[k];
+			}
 		}
 		this._drag=null;
 		this._drop=null;
 		this._changedOut=false;
 		this._changedIn=false;
 		this._changedDom=false;
+		this._selected=false;
+		this._focused=false;
 		this._dom=null;
 		this._dom_ls={};
 		// this._dom_ls.
@@ -86,7 +95,9 @@ class DomChipsItem{
 		if((v instanceof HTMLElement)&&v!==this._drop){
 			if(this._drop)dragDrop.unregisterDrop(this._drop);
 			dragDrop.registerDrop(v,(itm,evt)=>{
-				this._model.insert(itm,this.index);
+				if(itm.familly===this.familly){
+					this._model.insert(itm,this.index);
+				}
 			});
 			this._drop=v;
 		}else if(!v){
@@ -97,32 +108,59 @@ class DomChipsItem{
 	get index(){
 		return this._model?this._model._list.findIndex(itm=>itm.id===this.id):-1;
 	}
+	get familly(){
+		return this._model._conf.familly;
+	}
 	remove(){
 		if(this._model){
 			this._model.remove(this);
 		}
 	}
+	setSelected(selected){
+		selected=!!selected;
+		if(this._selected!==selected){
+			this._selected=selected;
+			let type=this._selected?'select':'unselect';
+			this._model._listener.flush(type,{
+				type,
+				itm:this
+			});
+			this._element.setSelected(this._selected);
+		}
+	}
+	setFocused(focused){
+		focused=!!focused;
+		if(this._focused!==focused){
+			this._focused=focused;
+			let type=this._focused?'focus':'blur';
+			this._model._listener.flush(type,{
+				type,
+				itm:this
+			});
+			this._element.setFocused(this._focused);
+		}
+	}
 };
-// 'getDom',
-// 'fromData',
-// 'toData'
 // old.parentNode.insertBefore(this.__element,old);
 // old.parentNode.removeChild(old);
 
-class DomChipsItemIO{
-	constructor(chipItem){
-		this._priv=chipItem;
-	}
-	get data(){
-		return this._priv.data;
-	}
-	set data(v){
-		this._priv.data=v;
-	}
-};
+// class DomChipsItemIO{
+// 	constructor(chipItem){
+// 		this._priv=chipItem;
+// 	}
+// 	get data(){
+// 		return this._priv.data;
+// 	}
+// 	set data(v){
+// 		this._priv.data=v;
+// 	}
+// };
 class RenderAPI{
 	constructor(chipItem){
 		this._priv=chipItem;
+	}
+	get index(){
+		return this._priv.index;
 	}
 	get root(){
 		return this._priv.root;
@@ -137,17 +175,22 @@ class RenderAPI{
 	set drop(v){this._priv.drop=v;}
 	get drag(){return this._priv.drag;}
 	set drag(v){this._priv.drag=v;}
+	get selected(){return this._priv._selected;}
+	focus(){
+		this._priv._model.focusIndex(this.index);
+	}
+	//this._selected=false;
 };
-class DomChipsOutIO{
-	constructor(chipItem){
-		this._priv=chipItem;
-	}
-	get data(){
-		return this._priv.data;
-	}
-	set data(v){
-		this._priv.data=v;
-	}
-};
+// class DomChipsOutIO{
+// 	constructor(chipItem){
+// 		this._priv=chipItem;
+// 	}
+// 	get data(){
+// 		return this._priv.data;
+// 	}
+// 	set data(v){
+// 		this._priv.data=v;
+// 	}
+// };
 
 module.exports={DomChipsItem};

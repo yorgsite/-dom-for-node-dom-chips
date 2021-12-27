@@ -5,12 +5,14 @@ module.exports=function(_dom){
 	console.log('exports dom-chips');
 	/**
 	Component 'dom-chips'.
+	'dom-chips' is a templatable list 
 	Shares model handler public attr & methods. See DomChipsModel.
 	@param {object} params : configuration object as 
 	<code>
 	_dom('dom-chips',{
 		render:AbtractCell(RenderAPI) constructor implementing AbtractCell
 		[root]:HTMLElement root element to use instead of the default root element
+		[familly]:string restrictive chip familly
 	})
 	</code>
 	*/
@@ -55,7 +57,7 @@ module.exports=function(_dom){
 		}
 		/**
 		 * add dom-chips event listener
-		 * @param {'insert'|'move'|'remove'|'change'} type : event type
+		 * @param {'insert'|'move'|'remove'|'change'} type : event type 
 		 * @param {function} callback : fired on event
 		 */
 		on(type,callback){
@@ -63,7 +65,7 @@ module.exports=function(_dom){
 		}
 		/**
 		 * removes dom-chips event listener
-		 * @param {string} type 
+		 * @param {string} type  
 		 * @param {function} callback 
 		 */
 		off(type,callback){
@@ -118,27 +120,38 @@ module.exports=function(_dom){
 
 	/**
 	'dom-chips' cell renderer model.
+	The params.render attribute must follow this constructor pattern when calling _dom('dom-chips',params,root);.
 	@constructor
 	*/
 	class AbtractCell{
 		constructor(){}
 		/**
-		 * sets the data
-		 * @param {*} data 
-		 */
-		fromData(data){}
-		/**
-		 * @returns {*} the cell data
-		 */
-		toData(){}
-		/**
 		 * @returns {HTMLElement} the cell visual element
 		*/
 		getDom(){}
 		/**
+		 * sets the data
+		 * @param {*} data 
+		*/
+		fromData(data){}
+		/**
+		 * @returns {*} the cell data
+		*/
+		toData(){}
+		/**
 		 * [optional] checks data validity
 		 * @param {*} data 
-		 */
+		*/
 		getErrors(data){}
+		/**
+		 * [optional] handle cell selection state
+		 * @param {boolean} selected 
+		*/
+		setSelected(selected){}
+		/**
+		 * [optional] handle cell focus state
+		 * @param {boolean} selected
+		*/
+		setFocused(focused){}
 	}
 };

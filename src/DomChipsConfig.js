@@ -10,6 +10,7 @@ class DomChipsConfig{
 		this.renderConf=new DomChipsRenderConfig();
 		this.renderConf.init(params);
 		this.CellRenderer=this.renderConf.CellRenderer;
+		this.familly=params.familly&&typeof(params.familly)==='string'?params.familly:null;
 	}
 };
 
